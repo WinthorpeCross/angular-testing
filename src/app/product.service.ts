@@ -16,6 +16,15 @@ export class ProductService {
       }
     ];
   }
+
+  public getAllAsync(): Array<IProduct> {
+    return [
+      {
+        name: 'Product 1',
+        number: '1'
+      }
+    ];
+  }
 }
 
 // ToDo: Move to own file
