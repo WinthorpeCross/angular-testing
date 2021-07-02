@@ -1,29 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IProduct } from './IProduct';
+import { Observable } from 'rxjs';
+import { IThing } from './IThing';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  constructor() { }
+  constructor(private readonly _http: HttpClient) { }
 
-  public getAll(): Array<IProduct> {
-    return [
-      {
-        name: 'Product 1',
-        number: '1'
-      }
-    ];
-  }
-
-  public getAllAsync(): Array<IProduct> {
-    return [
-      {
-        name: 'Product 1',
-        number: '1'
-      }
-    ];
+  public getAllObservableAsync(): Observable<Array<IThing>> {
+    return this._http.get<Array<IThing>>('assets/products1.json');
+    //return throwError('error'); 
   }
 }
 

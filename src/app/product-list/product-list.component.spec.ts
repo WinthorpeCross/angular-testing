@@ -3,11 +3,13 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from 
 import { By } from '@angular/platform-browser';
 import { ProductService } from '../product.service';
 import { ProductServiceStub } from '../product.service.stub';
-import { ProductComponent } from '../product/product.component';
 
 import { ProductListComponent } from './product-list.component';
 import { ProductComponentStub } from '../product.component.stub';
 import { TestPromise } from '../_utilities/TestPromise';
+import { of, Subject, throwError } from 'rxjs';
+import { IThing } from '../IThing';
+import { catchError, take } from 'rxjs/operators';
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent,
@@ -35,33 +37,45 @@ describe('ProductListComponent', () => {
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     //fixture.detectChanges();
-    // (dependencies.productService.getAll as jasmine.Spy).and.returnValue([
-    //   { name: 'product', number: '1' }
-    // ]);
   });
 
-  // it('should fetch all of the products', () => {
-  //   expect(dependencies.productService.getAll).toHaveBeenCalledWith();
-  // });
-
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
-
   describe('on initialisation', () => {
-    let getProductsPromise: TestPromise;
+    let getProductsSubject: Subject<Array<IThing>>; // TestPromise;
 
     beforeEach(() => {
-      getProductsPromise = new TestPromise();
-      (dependencies.productService.getAllAsync as jasmine.Spy).and.returnValue(
-        getProductsPromise.promise
+      getProductsSubject = new Subject();
+      (dependencies.productService.getAllObservableAsync as jasmine.Spy).and.returnValue(
+        getProductsSubject.asObservable()
       );
       fixture.detectChanges();
     });
 
     it('should fetch all of the products', () => {
-      expect(dependencies.productService.getAllAsync).toHaveBeenCalledWith();
+      //fixture.detectChanges();
+      expect(dependencies.productService.getAllObservableAsync).toHaveBeenCalledWith();
     });
+
+  
+    describe('when the products have been fetched', () => {
+
+      beforeEach(fakeAsync(() => {
+        getProductsSubject.next([]); //[{ name: 'product', number: '1' }]); // .resolve([{ name: 'product', number: '1' }]);
+        //getProductsSubject.pipe().subscribe()
+
+        tick();
+
+        fixture.detectChanges();
+      }));
+
+      it('should display the products', () => {
+        expect(getProducts()[0].componentInstance.product).toEqual({
+          name: 'product',
+          number: '1'
+        });
+      });
+    });
+
+    
 
 
     // tests synchronous code
@@ -84,35 +98,16 @@ describe('ProductListComponent', () => {
     //       number: '1'
     //     });
     //   });
-
-
-    describe('when the products have been fetched', () => {
-      beforeEach(fakeAsync(() => {
-        getProductsPromise.resolve([{ name: 'product', number: '1' }]);
-
-        tick();
-
-        fixture.detectChanges();
-      }));
-
-      it('should display the products', () => {
-        expect(getProducts()[0].componentInstance.product).toEqual({
-          name: 'product',
-          number: '1'
-        });
-      });
-    });
-
-    describe('when something goes wrong when fetching the products', () => {
-      // In our beforeEach block, we make it async (we don’t need fakeAsync this time or detectChanges this time because we are not testing the template). Before we reject our promise, we need to spy on the console.log method. Luckily for us, we can spy on static methods using spyOn.
-      beforeEach(waitForAsync(() => {
-        spyOn(console, 'log');
+  //   describe('when something goes wrong when fetching the products', () => {
+  //     // In our beforeEach block, we make it async (we don’t need fakeAsync this time or detectChanges this time because we are not testing the template). Before we reject our promise, we need to spy on the console.log method. Luckily for us, we can spy on static methods using spyOn.
+  //     beforeEach(waitForAsync(() => {
+  //       spyOn(console, 'log');
     
-        getProductsPromise.reject('error!');
-      }));
-      it('should log the error', () => {
-        expect(console.log).toHaveBeenCalledWith('error!');
-      });
-    });
-  });
+  //       getProductsSubject.reject('error!');
+  //     }));
+  //     it('should log the error', () => {
+  //       expect(console.log).toHaveBeenCalledWith('error!');
+  //     });
+  //   });
+   });
 });
