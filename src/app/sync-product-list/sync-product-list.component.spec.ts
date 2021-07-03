@@ -30,25 +30,35 @@ describe('SyncProductListComponent', () => {
       .compileComponents();
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SyncProductListComponent);
-    component = fixture.componentInstance;
-    //fixture.detectChanges();
-    (dependencies.productService.getAll as jasmine.Spy).and.returnValue([
-      { name: 'product', number: '1' }
-    ]);
-  });
+  // beforeEach(() => {
+  //   fixture = TestBed.createComponent(SyncProductListComponent);
+  //   component = fixture.componentInstance;
+  //   //fixture.detectChanges();
+  //   (dependencies.productService.getAll as jasmine.Spy).and.returnValue([
+  //     { name: 'product', number: '1' }
+  //   ]);
+  // });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  // it('should create', () => {
+  //   expect(component).toBeTruthy();
+  // });
 
   //
   describe('on initialisation', () => {
 
     beforeEach(() => {
+      fixture = TestBed.createComponent(SyncProductListComponent);
+      component = fixture.componentInstance;
+      //fixture.detectChanges();
+      (dependencies.productService.getAll as jasmine.Spy).and.returnValue([
+        { name: 'product', number: '1' }
+      ]);
       fixture.detectChanges();
     });
+
+    // beforeEach(() => {
+    //   fixture.detectChanges();
+    // });
 
 
     it('should fetch all of the products', () => {
