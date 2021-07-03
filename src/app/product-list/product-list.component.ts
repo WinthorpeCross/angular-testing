@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { catchError, share, take } from 'rxjs/operators';
 
 import { IThing } from '../IThing';
@@ -19,11 +19,12 @@ export class ProductListComponent implements OnInit {
 
   constructor(private readonly _productService: ProductService) {
     //this.products$ = this._getAllProducts();
-    this._getAllProducts();
+    //this._getAllProducts();
     //this.productsSubject = this._getAllProducts1();
   }
 
   ngOnInit(): void {
+    this._getAllProducts();
     //this.products = this._productService.getAll(); //synchronous method
     //this.getAllProducts();
     //this._getAllProducts();
