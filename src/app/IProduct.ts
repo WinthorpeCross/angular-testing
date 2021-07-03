@@ -1,4 +1,4 @@
-export interface IThing {
+export interface IProduct {
     name: string;
     number: string;
   }

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IThing } from '../IThing';
+import { IProduct } from '../IProduct';
 
 
 @Component({
@@ -9,7 +9,7 @@ import { IThing } from '../IThing';
 })
 export class ProductComponent implements OnInit {
   @Input()
-  public product: IThing;
+  public product: IProduct;
 
   constructor() { }
 

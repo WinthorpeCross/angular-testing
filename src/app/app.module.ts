@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductComponent } from './product/product.component';
+import { SyncProductListComponent } from './sync-product-list/sync-product-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FetchDataComponent,
     ProductListComponent,
-    ProductComponent
+    ProductComponent,
+    SyncProductListComponent
   ],
   imports: [
     BrowserModule,

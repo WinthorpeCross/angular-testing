@@ -8,9 +8,9 @@ import { ProductListComponent } from './product-list.component';
 import { ProductComponentStub } from '../product.component.stub';
 import { TestPromise } from '../_utilities/TestPromise';
 import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
-import { IThing } from '../IThing';
+import { IProduct } from '../IProduct';
 import { catchError, take } from 'rxjs/operators';
-import { ProductServiceStub } from '../product/product.service.stub';
+import { ProductServiceStub } from '../product.service.stub';
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent,
@@ -38,13 +38,17 @@ describe('ProductListComponent', () => {
     // !! This (.createComponent) is when the constructor is called, so mock the observable
     // before here and change the subject to a BehaviorSubject.
     // Maybe subject will work as well.
-    let productsSubject = new Subject<Array<IThing>>(); // BehaviorSubject([{ name: 'product', number: '1' }]);
+    let productsSubject = new Subject<Array<IProduct>>(); // BehaviorSubject([{ name: 'product', number: '1' }]);
     (dependencies.productService.getAllObservableAsync as jasmine.Spy).and.returnValue(
       productsSubject.asObservable()
     );
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
-    // });
+  
+    // });  <----- this ends the beforeEach(() block!!!!!!!
+
+
+
 
     //fixture.detectChanges();
     // fixture = TestBed.createComponent(ProductListComponent);
@@ -53,7 +57,7 @@ describe('ProductListComponent', () => {
 
 
     describe('on initialisation', () => {
-      //let productsSubject: Subject<Array<IThing>>; // TestPromise;
+      //let productsSubject: Subject<Array<IProduct>>; // TestPromise;
 
 
       it('should fetch all of the products', () => {
@@ -78,8 +82,9 @@ describe('ProductListComponent', () => {
         it('should display the products', () => {
           // console.log(fixture.nativeElement);
           // console.log(getProducts()[0].componentInstance.product);
+          //fixture.detectChanges();
           expect(getProducts()[0].componentInstance.product).toEqual({
-            name: 'product',
+            name: 'prodct', //<-- should fail here
             number: '1'
           });
         });

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { catchError, share, take } from 'rxjs/operators';
 
-import { IThing } from '../IThing';
+import { IProduct } from '../IProduct';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -10,27 +10,18 @@ import { ProductService } from '../product.service';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit {
-  //public products: Array<IThing>;
+export class ProductListComponent { // implements OnInit {
+  //public products: Array<IProduct>;
   //public errorObjectPipe = null;
   public errorObjectSubject = null;
-  public productsSubject: Subject<Array<IThing>> = new Subject();
-  products$: Observable<Array<IThing>>
+  public productsSubject: Subject<Array<IProduct>> = new Subject();
+  products$: Observable<Array<IProduct>>
 
   constructor(private readonly _productService: ProductService) {
-    //this.products$ = this._getAllProducts();
-    //this._getAllProducts();
-    //this.productsSubject = this._getAllProducts1();
-  }
-
-  ngOnInit(): void {
     this._getAllProducts();
-    //this.products = this._productService.getAll(); //synchronous method
-    //this.getAllProducts();
-    //this._getAllProducts();
   }
 
-
+  //ngOnInit(): void { }
 
   private async _getAllProducts(): Promise<void> {
     this._productService.getAllObservableAsync()
@@ -42,7 +33,7 @@ export class ProductListComponent implements OnInit {
       ).subscribe(result => { this.productsSubject.next(result) });
   }
 
-  // private _getAllProducts(): Observable<Array<IThing>> {
+  // private _getAllProducts(): Observable<Array<IProduct>> {
   //   return this._productService.getAllObservableAsyncPipe()
   //     .pipe((take(1), //share()
   //       catchError(err => {
@@ -61,7 +52,7 @@ export class ProductListComponent implements OnInit {
 
   // public async getAllProducts(): Promise<void> {
   //   try {
-  //     const allProducts: Array<IThing> = await this._productService.getAllAsync();
+  //     const allProducts: Array<IProduct> = await this._productService.getAllAsync();
   //     //this.products = allProducts;
   //     this.productsSubject.next(allProducts);
   //   } catch (e) {

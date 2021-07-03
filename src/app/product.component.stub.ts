@@ -1,5 +1,5 @@
 import { Component, Input} from "@angular/core";
-import { IThing } from "./IThing";
+import { IProduct } from "./IProduct";
 
 @Component({
   selector: 'app-product',
@@ -7,5 +7,5 @@ import { IThing } from "./IThing";
 })
 export class ProductComponentStub {
   @Input()
-  public product: IThing;
+  public product: IProduct;
 }
